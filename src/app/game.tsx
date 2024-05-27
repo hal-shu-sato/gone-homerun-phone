@@ -13,6 +13,7 @@ export default function Game() {
     z: number | null;
   }>({ x: null, y: null, z: null });
   const [flash, setFlash] = useState<boolean>(false);
+  const [accelerationHistory, setAccelerationHistory] = useState<number[]>([]);
 
   const flashScreen = useCallback(() => {
     // For Android
@@ -40,6 +41,7 @@ export default function Game() {
 
       const totalAcceleration = Math.sqrt(x ** 2 + y ** 2 + z ** 2);
       if (totalAcceleration >= 5) {
+        setAccelerationHistory((prev) => [...prev, totalAcceleration]);
         flashScreen();
       }
     },
@@ -85,6 +87,7 @@ export default function Game() {
       <Button onClick={start}>Start</Button>
       <Button onClick={stop}>Stop</Button>
       <pre>{JSON.stringify(acceleration, null, 2)}</pre>
+      <pre>{JSON.stringify(accelerationHistory, null, 2)}</pre>
     </>
   );
 }
