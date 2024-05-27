@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from 'react';
 
-import { Button } from 'react-bootstrap';
+import { Button, FormControl } from 'react-bootstrap';
 
 import styles from './game.module.css';
 
@@ -14,6 +14,9 @@ export default function Game() {
   }>({ x: null, y: null, z: null });
   const [flash, setFlash] = useState<boolean>(false);
   const [accelerationHistory, setAccelerationHistory] = useState<number[]>([]);
+  const [accelerationThreshold, setAccelerationThreshold] = useState<
+    number | null
+  >(5);
 
   const flashScreen = useCallback(() => {
     // For Android
@@ -84,6 +87,17 @@ export default function Game() {
 
   return (
     <>
+      <FormControl
+        type="number"
+        value={accelerationThreshold ?? ''}
+        onChange={(event) => {
+          if (event.target.value === '') {
+            setAccelerationThreshold(null);
+            return;
+          }
+          setAccelerationThreshold(Number(event.target.value));
+        }}
+      />
       <Button onClick={start}>Start</Button>
       <Button onClick={stop}>Stop</Button>
       <pre>{JSON.stringify(acceleration, null, 2)}</pre>
