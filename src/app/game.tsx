@@ -43,12 +43,12 @@ export default function Game() {
       if (x === null || y === null || z === null) return;
 
       const totalAcceleration = Math.sqrt(x ** 2 + y ** 2 + z ** 2);
-      if (totalAcceleration >= 5) {
+      if (totalAcceleration >= (accelerationThreshold ?? 10)) {
         setAccelerationHistory((prev) => [...prev, totalAcceleration]);
         flashScreen();
       }
     },
-    [flashScreen],
+    [flashScreen, accelerationThreshold],
   );
 
   const start = useCallback(() => {
