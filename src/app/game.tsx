@@ -18,11 +18,13 @@ export default function Game() {
     // For Android
     if (typeof window.navigator.vibrate === 'function')
       window.navigator.vibrate(200);
-    setFlash(true);
-    setTimeout(() => {
-      setFlash(false);
-    }, 500);
-  }, []);
+    if (!flash) {
+      setFlash(true);
+      setTimeout(() => {
+        setFlash(false);
+      }, 500);
+    }
+  }, [flash]);
 
   const handleDeviceMotion = useCallback(
     (event: DeviceMotionEvent) => {
