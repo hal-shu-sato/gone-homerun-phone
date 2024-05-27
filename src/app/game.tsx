@@ -15,22 +15,39 @@ export default function Game() {
   const [flash, setFlash] = useState<boolean>(false);
 
   const flashScreen = useCallback(() => {
+    // For Android
+    if (typeof window.navigator.vibrate === 'function')
+      window.navigator.vibrate(200);
     setFlash(true);
     setTimeout(() => {
       setFlash(false);
     }, 500);
   }, []);
 
-  const handleDeviceMotion = useCallback((event: DeviceMotionEvent) => {
-    const { x, y, z } = event.acceleration ?? {};
-    if (x === undefined || y === undefined || z === undefined) {
-      setAcceleration({ x: null, y: null, z: null });
-      return;
-    }
-    setAcceleration({ x, y, z });
-  }, []);
+  const handleDeviceMotion = useCallback(
+    (event: DeviceMotionEvent) => {
+      const { x, y, z } = event.acceleration ?? {};
+
+      if (x === undefined || y === undefined || z === undefined) {
+        setAcceleration({ x: null, y: null, z: null });
+        return;
+      }
+      setAcceleration({ x, y, z });
+
+      if (x === null || y === null || z === null) return;
+
+      const totalAcceleration = Math.sqrt(x ** 2 + y ** 2 + z ** 2);
+      if (totalAcceleration >= 5) {
+        flashScreen();
+      }
+    },
+    [flashScreen],
+  );
 
   const start = useCallback(() => {
+    window.removeEventListener('devicemotion', handleDeviceMotion);
+
+    // For iOS 13+
     if (
       typeof (
         DeviceMotionEvent as unknown as DeviceMotionEvent & {
@@ -45,19 +62,17 @@ export default function Game() {
       )
         .requestPermission()
         .then((permission: string) => {
-          if (permission === 'granted') {
+          if (permission === 'granted')
             window.addEventListener('devicemotion', handleDeviceMotion);
-          }
         });
     } else {
       window.addEventListener('devicemotion', handleDeviceMotion);
     }
+  }, [handleDeviceMotion]);
 
-    // window.navigator.vibrate(200);
-    flashScreen();
-
-    return () => window.removeEventListener('devicemotion', handleDeviceMotion);
-  }, [handleDeviceMotion, flashScreen]);
+  const stop = useCallback(() => {
+    window.removeEventListener('devicemotion', handleDeviceMotion);
+  }, [handleDeviceMotion]);
 
   if (flash) {
     return <div className={styles.flash} />;
@@ -66,6 +81,7 @@ export default function Game() {
   return (
     <>
       <Button onClick={start}>Start</Button>
+      <Button onClick={stop}>Stop</Button>
       <pre>{JSON.stringify(acceleration, null, 2)}</pre>
     </>
   );
