@@ -16,7 +16,7 @@ export default function Game() {
   const [accelerationHistory, setAccelerationHistory] = useState<number[]>([]);
   const [accelerationThreshold, setAccelerationThreshold] = useState<
     number | null
-  >(5);
+  >(10);
 
   const flashScreen = useCallback(() => {
     // For Android
