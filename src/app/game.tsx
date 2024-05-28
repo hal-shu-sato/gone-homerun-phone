@@ -9,6 +9,10 @@ import styles from './game.module.css';
 
 const HIT_THRESHOLD = 15;
 const CHEERS_THRESHOLD = 20;
+const FILTER_SIZE = 5;
+
+const filterAcceleration = { x: 0, y: 0, z: 0 };
+let filterCount = 0;
 
 export default function Game() {
   const [inPlay, setInPlay] = useState<boolean>(false);
@@ -41,7 +45,25 @@ export default function Game() {
       const { x, y, z } = event.acceleration ?? { x: null, y: null, z: null };
       if (x === null || y === null || z === null) return;
 
-      const totalAcceleration = Math.sqrt(x ** 2 + y ** 2 + z ** 2);
+      filterCount++;
+      filterAcceleration.x += x;
+      filterAcceleration.y += y;
+      filterAcceleration.z += z;
+
+      if (filterCount < FILTER_SIZE) return;
+
+      const { x: xSum, y: ySum, z: zSum } = filterAcceleration;
+
+      filterCount = 0;
+      filterAcceleration.x = 0;
+      filterAcceleration.y = 0;
+      filterAcceleration.z = 0;
+
+      const totalAcceleration = Math.sqrt(
+        (xSum / FILTER_SIZE) ** 2 +
+          (ySum / FILTER_SIZE) ** 2 +
+          (zSum / FILTER_SIZE) ** 2,
+      );
 
       if (totalAcceleration < HIT_THRESHOLD) return;
 
