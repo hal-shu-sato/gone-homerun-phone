@@ -7,6 +7,8 @@ import { useAudioPlayer } from 'react-use-audio-player';
 
 import styles from './game.module.css';
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const BUNT_THRESHOLD = 10;
 const HIT_THRESHOLD = 15;
 const HOMERUN_THRESHOLD = 25;
@@ -18,7 +20,7 @@ let filterCount = 0;
 export default function Game() {
   const [inPlay, setInPlay] = useState<boolean>(false);
   const inFlight = useRef<boolean>(false);
-  const [, setAccelerationHistory] = useState<number[]>([]);
+  const [accelerationHistory, setAccelerationHistory] = useState<number[]>([]);
   const [flashColor, setFlashColor] = useState<string>('#ff0000');
   const [judge, setJudge] = useState<string>('');
 
@@ -73,6 +75,7 @@ export default function Game() {
           (ySum / FILTER_SIZE) ** 2 +
           (zSum / FILTER_SIZE) ** 2,
       );
+      setAccelerationHistory((prev) => [...prev, totalAcceleration]);
 
       if (totalAcceleration < BUNT_THRESHOLD) return;
 
@@ -80,8 +83,6 @@ export default function Game() {
       // For Android
       if (typeof window.navigator.vibrate === 'function')
         window.navigator.vibrate(200);
-
-      setAccelerationHistory((prev) => [...prev, totalAcceleration]);
 
       if (totalAcceleration >= HOMERUN_THRESHOLD) {
         setFlashColor('#1154B8');
@@ -160,6 +161,18 @@ export default function Game() {
         Start
       </Button>
       <Button onClick={stop}>Stop</Button>
+      {isDev && (
+        <div>
+          <h2>Debugging</h2>
+          <ul>
+            <li>inPlay: {inPlay.toString()}</li>
+            <li>inFlight: {inFlight.current.toString()}</li>
+            <li>flashColor: {flashColor}</li>
+            <li>judge: {judge}</li>
+          </ul>
+          <pre>{JSON.stringify(accelerationHistory.toReversed(), null, 2)}</pre>
+        </div>
+      )}
     </>
   );
 }
