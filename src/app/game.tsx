@@ -100,6 +100,7 @@ export default function Game() {
     },
     [cheersAudioPlayer, hitAudioPlayer, buntAudioPlayer],
   );
+  const handleDeviceMotionRef = useRef(handleDeviceMotion);
 
   const start = useCallback(() => {
     if (inPlay) return;
@@ -126,20 +127,22 @@ export default function Game() {
         .then((permission: string) => {
           if (permission === 'granted') {
             window.addEventListener('devicemotion', handleDeviceMotion);
+            handleDeviceMotionRef.current = handleDeviceMotion;
           }
         });
     } else {
       window.addEventListener('devicemotion', handleDeviceMotion);
+      handleDeviceMotionRef.current = handleDeviceMotion;
     }
   }, [inPlay, envAudioPlayer, handleDeviceMotion]);
 
   const stop = useCallback(() => {
     if (!inPlay) return;
 
-    window.removeEventListener('devicemotion', handleDeviceMotion);
+    window.removeEventListener('devicemotion', handleDeviceMotionRef.current);
     envAudioPlayer.pause();
     setInPlay(false);
-  }, [inPlay, handleDeviceMotion, envAudioPlayer]);
+  }, [inPlay, envAudioPlayer]);
 
   if (inFlight.current) {
     return (
