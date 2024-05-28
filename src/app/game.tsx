@@ -2,18 +2,18 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { Button, FormControl } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { useAudioPlayer } from 'react-use-audio-player';
 
 import styles from './game.module.css';
+
+const HIT_THRESHOLD = 15;
+const CHEERS_THRESHOLD = 20;
 
 export default function Game() {
   const [inPlay, setInPlay] = useState<boolean>(false);
   const inFlight = useRef<boolean>(false);
   const [accelerationHistory, setAccelerationHistory] = useState<number[]>([]);
-  const [accelerationThreshold, setAccelerationThreshold] = useState<
-    number | null
-  >(10);
 
   const envAudioPlayer = useAudioPlayer();
   const cheersAudioPlayer = useAudioPlayer();
@@ -42,27 +42,23 @@ export default function Game() {
       if (x === null || y === null || z === null) return;
 
       const totalAcceleration = Math.sqrt(x ** 2 + y ** 2 + z ** 2);
-      const thld = accelerationThreshold ?? 10;
 
-      if (totalAcceleration < thld) return;
+      if (totalAcceleration < HIT_THRESHOLD) return;
 
       inFlight.current = true;
-      // setTimeout(() => {
-      //   inFlight.current = false;
-      // }, 2000);
       // For Android
       if (typeof window.navigator.vibrate === 'function')
         window.navigator.vibrate(200);
 
       setAccelerationHistory((prev) => [...prev, totalAcceleration]);
 
-      if (totalAcceleration >= 2 * thld) {
+      if (totalAcceleration >= CHEERS_THRESHOLD) {
         cheersAudioPlayer.play();
       } else {
         hitAudioPlayer.play();
       }
     },
-    [accelerationThreshold, cheersAudioPlayer, hitAudioPlayer],
+    [cheersAudioPlayer, hitAudioPlayer],
   );
 
   const start = useCallback(() => {
@@ -111,17 +107,6 @@ export default function Game() {
 
   return (
     <>
-      <FormControl
-        type="number"
-        value={accelerationThreshold ?? ''}
-        onChange={(event) => {
-          if (event.target.value === '') {
-            setAccelerationThreshold(null);
-            return;
-          }
-          setAccelerationThreshold(Number(event.target.value));
-        }}
-      />
       <Button onClick={start} disabled={inPlay}>
         Start
       </Button>
