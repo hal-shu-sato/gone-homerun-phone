@@ -18,7 +18,9 @@ let filterCount = 0;
 export default function Game() {
   const [inPlay, setInPlay] = useState<boolean>(false);
   const inFlight = useRef<boolean>(false);
-  const [accelerationHistory, setAccelerationHistory] = useState<number[]>([]);
+  const [, setAccelerationHistory] = useState<number[]>([]);
+  const [flashColor, setFlashColor] = useState<string>('#ff0000');
+  const [judge, setJudge] = useState<string>('');
 
   const envAudioPlayer = useAudioPlayer();
   const cheersAudioPlayer = useAudioPlayer();
@@ -82,10 +84,16 @@ export default function Game() {
       setAccelerationHistory((prev) => [...prev, totalAcceleration]);
 
       if (totalAcceleration >= CHEERS_THRESHOLD) {
+        setFlashColor('#1154B8');
+        setJudge('Home Run!');
         cheersAudioPlayer.play();
       } else if (totalAcceleration >= HIT_THRESHOLD) {
+        setFlashColor('#1154B8');
+        setJudge('Hit!');
         hitAudioPlayer.play();
       } else {
+        setFlashColor('#FE5D26');
+        setJudge('Bunt');
         buntAudioPlayer.play();
       }
     },
@@ -133,7 +141,17 @@ export default function Game() {
   }, [inPlay, handleDeviceMotion, envAudioPlayer]);
 
   if (inFlight.current) {
-    return <div className={styles.flash} />;
+    return (
+      <div
+        className={styles.flash}
+        style={{
+          backgroundColor: flashColor,
+          color: judge === 'Bunt' ? '#000' : '#fff',
+        }}
+      >
+        {judge}
+      </div>
+    );
   }
 
   return (
@@ -142,7 +160,6 @@ export default function Game() {
         Start
       </Button>
       <Button onClick={stop}>Stop</Button>
-      <pre>{JSON.stringify(accelerationHistory, null, 2)}</pre>
     </>
   );
 }
