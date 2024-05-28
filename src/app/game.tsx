@@ -1,8 +1,9 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Button, FormControl } from 'react-bootstrap';
+import { useAudioPlayer } from 'react-use-audio-player';
 
 import styles from './game.module.css';
 
@@ -17,6 +18,17 @@ export default function Game() {
   const [accelerationThreshold, setAccelerationThreshold] = useState<
     number | null
   >(10);
+
+  const envAudioPlayer = useAudioPlayer();
+  const cheersAudioPlayer = useAudioPlayer();
+  const hitAudioPlayer = useAudioPlayer();
+
+  useEffect(() => {
+    envAudioPlayer.load('/assets/sounds/lab-env.mp3', { loop: true });
+    cheersAudioPlayer.load('/assets/sounds/metal/lab-cheers.mp3');
+    hitAudioPlayer.load('/assets/sounds/metal/lab-far.mp3');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const flashScreen = useCallback(() => {
     // For Android
@@ -43,17 +55,25 @@ export default function Game() {
       if (x === null || y === null || z === null) return;
 
       const totalAcceleration = Math.sqrt(x ** 2 + y ** 2 + z ** 2);
-      if (totalAcceleration >= (accelerationThreshold ?? 10)) {
+      const thld = accelerationThreshold ?? 10;
+      if (totalAcceleration >= 2 * thld) {
         setAccelerationHistory((prev) => [...prev, totalAcceleration]);
+        cheersAudioPlayer.play();
+        flashScreen();
+      } else if (totalAcceleration >= thld) {
+        setAccelerationHistory((prev) => [...prev, totalAcceleration]);
+        hitAudioPlayer.play();
         flashScreen();
       }
     },
-    [flashScreen, accelerationThreshold],
+    [flashScreen, accelerationThreshold, cheersAudioPlayer, hitAudioPlayer],
   );
   const handleDeviceMotionRef = useRef(handleDeviceMotion);
 
   const start = useCallback(() => {
     window.removeEventListener('devicemotion', handleDeviceMotionRef.current);
+
+    envAudioPlayer.play();
 
     // For iOS 13+
     if (
@@ -79,11 +99,12 @@ export default function Game() {
       window.addEventListener('devicemotion', handleDeviceMotion);
       handleDeviceMotionRef.current = handleDeviceMotion;
     }
-  }, [handleDeviceMotion]);
+  }, [handleDeviceMotion, envAudioPlayer]);
 
   const stop = useCallback(() => {
     window.removeEventListener('devicemotion', handleDeviceMotionRef.current);
-  }, [handleDeviceMotionRef]);
+    envAudioPlayer.pause();
+  }, [handleDeviceMotionRef, envAudioPlayer]);
 
   if (flash) {
     return <div className={styles.flash} />;
