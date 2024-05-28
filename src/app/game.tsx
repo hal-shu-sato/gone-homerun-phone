@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { Button, FormControl } from 'react-bootstrap';
 
@@ -50,9 +50,10 @@ export default function Game() {
     },
     [flashScreen, accelerationThreshold],
   );
+  const handleDeviceMotionRef = useRef(handleDeviceMotion);
 
   const start = useCallback(() => {
-    window.removeEventListener('devicemotion', handleDeviceMotion);
+    window.removeEventListener('devicemotion', handleDeviceMotionRef.current);
 
     // For iOS 13+
     if (
@@ -69,17 +70,20 @@ export default function Game() {
       )
         .requestPermission()
         .then((permission: string) => {
-          if (permission === 'granted')
+          if (permission === 'granted') {
             window.addEventListener('devicemotion', handleDeviceMotion);
+            handleDeviceMotionRef.current = handleDeviceMotion;
+          }
         });
     } else {
       window.addEventListener('devicemotion', handleDeviceMotion);
+      handleDeviceMotionRef.current = handleDeviceMotion;
     }
   }, [handleDeviceMotion]);
 
   const stop = useCallback(() => {
-    window.removeEventListener('devicemotion', handleDeviceMotion);
-  }, [handleDeviceMotion]);
+    window.removeEventListener('devicemotion', handleDeviceMotionRef.current);
+  }, [handleDeviceMotionRef]);
 
   if (flash) {
     return <div className={styles.flash} />;
