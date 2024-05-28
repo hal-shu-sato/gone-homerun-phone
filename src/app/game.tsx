@@ -8,11 +8,6 @@ import { useAudioPlayer } from 'react-use-audio-player';
 import styles from './game.module.css';
 
 export default function Game() {
-  const [acceleration, setAcceleration] = useState<{
-    x: number | null;
-    y: number | null;
-    z: number | null;
-  }>({ x: null, y: null, z: null });
   const [inPlay, setInPlay] = useState<boolean>(false);
   const inFlight = useRef<boolean>(false);
   const [accelerationHistory, setAccelerationHistory] = useState<number[]>([]);
@@ -31,42 +26,36 @@ export default function Game() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleDeviceMotion = useCallback((event: DeviceMotionEvent) => {
-    if (inFlight.current) return;
+  const handleDeviceMotion = useCallback(
+    (event: DeviceMotionEvent) => {
+      if (inFlight.current) return;
 
-    const { x, y, z } = event.acceleration ?? {};
-    if (x === undefined || y === undefined || z === undefined) {
-      setAcceleration({ x: null, y: null, z: null });
-      return;
-    }
-    setAcceleration({ x, y, z });
-  }, []);
+      const { x, y, z } = event.acceleration ?? { x: null, y: null, z: null };
+      if (x === null || y === null || z === null) return;
 
-  useEffect(() => {
-    const { x, y, z } = acceleration;
-    if (x === null || y === null || z === null) return;
+      const totalAcceleration = Math.sqrt(x ** 2 + y ** 2 + z ** 2);
+      const thld = accelerationThreshold ?? 10;
 
-    const totalAcceleration = Math.sqrt(x ** 2 + y ** 2 + z ** 2);
-    const thld = accelerationThreshold ?? 10;
+      if (totalAcceleration < thld) return;
 
-    if (totalAcceleration < thld) return;
+      inFlight.current = true;
+      setTimeout(() => {
+        inFlight.current = false;
+      }, 2000);
+      // For Android
+      if (typeof window.navigator.vibrate === 'function')
+        window.navigator.vibrate(200);
 
-    inFlight.current = true;
-    setTimeout(() => {
-      inFlight.current = false;
-    }, 2000);
-    // For Android
-    if (typeof window.navigator.vibrate === 'function')
-      window.navigator.vibrate(200);
+      setAccelerationHistory((prev) => [...prev, totalAcceleration]);
 
-    setAccelerationHistory((prev) => [...prev, totalAcceleration]);
-
-    if (totalAcceleration >= 2 * thld) {
-      cheersAudioPlayer.play();
-    } else {
-      hitAudioPlayer.play();
-    }
-  }, [acceleration, accelerationThreshold, cheersAudioPlayer, hitAudioPlayer]);
+      if (totalAcceleration >= 2 * thld) {
+        cheersAudioPlayer.play();
+      } else {
+        hitAudioPlayer.play();
+      }
+    },
+    [accelerationThreshold, cheersAudioPlayer, hitAudioPlayer],
+  );
 
   const start = useCallback(() => {
     if (inPlay) return;
@@ -129,7 +118,6 @@ export default function Game() {
         Start
       </Button>
       <Button onClick={stop}>Stop</Button>
-      <pre>{JSON.stringify(acceleration, null, 2)}</pre>
       <pre>{JSON.stringify(accelerationHistory, null, 2)}</pre>
     </>
   );
