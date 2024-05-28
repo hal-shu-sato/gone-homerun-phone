@@ -58,13 +58,13 @@ export default function Game() {
       const thld = accelerationThreshold ?? 10;
       if (totalAcceleration >= 2 * thld) {
         setAccelerationHistory((prev) => [...prev, totalAcceleration]);
-        if (!cheersAudioPlayer.playing) {
+        if (cheersAudioPlayer.paused) {
           cheersAudioPlayer.play();
           flashScreen();
         }
       } else if (totalAcceleration >= thld) {
         setAccelerationHistory((prev) => [...prev, totalAcceleration]);
-        if (!hitAudioPlayer.playing) {
+        if (hitAudioPlayer.paused) {
           hitAudioPlayer.play();
           flashScreen();
         }
