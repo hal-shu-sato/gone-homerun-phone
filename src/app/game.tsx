@@ -9,7 +9,7 @@ import styles from './game.module.css';
 
 const BUNT_THRESHOLD = 10;
 const HIT_THRESHOLD = 15;
-const CHEERS_THRESHOLD = 20;
+const HOMERUN_THRESHOLD = 25;
 const FILTER_SIZE = 5;
 
 const filterAcceleration = { x: 0, y: 0, z: 0 };
@@ -83,7 +83,7 @@ export default function Game() {
 
       setAccelerationHistory((prev) => [...prev, totalAcceleration]);
 
-      if (totalAcceleration >= CHEERS_THRESHOLD) {
+      if (totalAcceleration >= HOMERUN_THRESHOLD) {
         setFlashColor('#1154B8');
         setJudge('Home Run!');
         cheersAudioPlayer.play();
