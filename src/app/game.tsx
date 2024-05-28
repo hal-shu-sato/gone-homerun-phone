@@ -13,7 +13,7 @@ export default function Game() {
     y: number | null;
     z: number | null;
   }>({ x: null, y: null, z: null });
-  const [flash, setFlash] = useState<boolean>(false);
+  const [inPlay, setInPlay] = useState<boolean>(false);
   const [accelerationHistory, setAccelerationHistory] = useState<number[]>([]);
   const [accelerationThreshold, setAccelerationThreshold] = useState<
     number | null
@@ -34,13 +34,13 @@ export default function Game() {
     // For Android
     if (typeof window.navigator.vibrate === 'function')
       window.navigator.vibrate(200);
-    if (!flash) {
-      setFlash(true);
+    if (!inPlay) {
+      setInPlay(true);
       setTimeout(() => {
-        setFlash(false);
-      }, 500);
+        setInPlay(false);
+      }, 2000);
     }
-  }, [flash]);
+  }, [inPlay]);
 
   const handleDeviceMotion = useCallback(
     (event: DeviceMotionEvent) => {
@@ -58,19 +58,25 @@ export default function Game() {
       const thld = accelerationThreshold ?? 10;
       if (totalAcceleration >= 2 * thld) {
         setAccelerationHistory((prev) => [...prev, totalAcceleration]);
-        if (cheersAudioPlayer.paused) {
-          cheersAudioPlayer.play();
+        if (!inPlay) {
           flashScreen();
+          cheersAudioPlayer.play();
         }
       } else if (totalAcceleration >= thld) {
         setAccelerationHistory((prev) => [...prev, totalAcceleration]);
-        if (hitAudioPlayer.paused) {
-          hitAudioPlayer.play();
+        if (!inPlay) {
           flashScreen();
+          hitAudioPlayer.play();
         }
       }
     },
-    [flashScreen, accelerationThreshold, cheersAudioPlayer, hitAudioPlayer],
+    [
+      flashScreen,
+      accelerationThreshold,
+      cheersAudioPlayer,
+      hitAudioPlayer,
+      inPlay,
+    ],
   );
   const handleDeviceMotionRef = useRef(handleDeviceMotion);
 
@@ -110,7 +116,7 @@ export default function Game() {
     envAudioPlayer.pause();
   }, [handleDeviceMotionRef, envAudioPlayer]);
 
-  if (flash) {
+  if (inPlay) {
     return <div className={styles.flash} />;
   }
 
