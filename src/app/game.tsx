@@ -14,6 +14,7 @@ export default function Game() {
     z: number | null;
   }>({ x: null, y: null, z: null });
   const [inPlay, setInPlay] = useState<boolean>(false);
+  const inFlight = useRef<boolean>(false);
   const [accelerationHistory, setAccelerationHistory] = useState<number[]>([]);
   const [accelerationThreshold, setAccelerationThreshold] = useState<
     number | null
@@ -30,58 +31,48 @@ export default function Game() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const flashScreen = useCallback(() => {
+  const handleDeviceMotion = useCallback((event: DeviceMotionEvent) => {
+    if (inFlight.current) return;
+
+    const { x, y, z } = event.acceleration ?? {};
+    if (x === undefined || y === undefined || z === undefined) {
+      setAcceleration({ x: null, y: null, z: null });
+      return;
+    }
+    setAcceleration({ x, y, z });
+  }, []);
+
+  useEffect(() => {
+    const { x, y, z } = acceleration;
+    if (x === null || y === null || z === null) return;
+
+    const totalAcceleration = Math.sqrt(x ** 2 + y ** 2 + z ** 2);
+    const thld = accelerationThreshold ?? 10;
+
+    if (totalAcceleration < thld) return;
+
+    inFlight.current = true;
+    setTimeout(() => {
+      inFlight.current = false;
+    }, 2000);
     // For Android
     if (typeof window.navigator.vibrate === 'function')
       window.navigator.vibrate(200);
-    if (!inPlay) {
-      setInPlay(true);
-      setTimeout(() => {
-        setInPlay(false);
-      }, 2000);
+
+    setAccelerationHistory((prev) => [...prev, totalAcceleration]);
+
+    if (totalAcceleration >= 2 * thld) {
+      cheersAudioPlayer.play();
+    } else {
+      hitAudioPlayer.play();
     }
-  }, [inPlay]);
-
-  const handleDeviceMotion = useCallback(
-    (event: DeviceMotionEvent) => {
-      const { x, y, z } = event.acceleration ?? {};
-
-      if (x === undefined || y === undefined || z === undefined) {
-        setAcceleration({ x: null, y: null, z: null });
-        return;
-      }
-      setAcceleration({ x, y, z });
-
-      if (x === null || y === null || z === null) return;
-
-      const totalAcceleration = Math.sqrt(x ** 2 + y ** 2 + z ** 2);
-      const thld = accelerationThreshold ?? 10;
-      if (totalAcceleration >= 2 * thld) {
-        setAccelerationHistory((prev) => [...prev, totalAcceleration]);
-        if (!inPlay) {
-          flashScreen();
-          cheersAudioPlayer.play();
-        }
-      } else if (totalAcceleration >= thld) {
-        setAccelerationHistory((prev) => [...prev, totalAcceleration]);
-        if (!inPlay) {
-          flashScreen();
-          hitAudioPlayer.play();
-        }
-      }
-    },
-    [
-      flashScreen,
-      accelerationThreshold,
-      cheersAudioPlayer,
-      hitAudioPlayer,
-      inPlay,
-    ],
-  );
-  const handleDeviceMotionRef = useRef(handleDeviceMotion);
+  }, [acceleration, accelerationThreshold, cheersAudioPlayer, hitAudioPlayer]);
 
   const start = useCallback(() => {
-    window.removeEventListener('devicemotion', handleDeviceMotionRef.current);
+    if (inPlay) return;
+
+    window.removeEventListener('devicemotion', handleDeviceMotion);
+    setInPlay(true);
 
     envAudioPlayer.play();
 
@@ -102,21 +93,22 @@ export default function Game() {
         .then((permission: string) => {
           if (permission === 'granted') {
             window.addEventListener('devicemotion', handleDeviceMotion);
-            handleDeviceMotionRef.current = handleDeviceMotion;
           }
         });
     } else {
       window.addEventListener('devicemotion', handleDeviceMotion);
-      handleDeviceMotionRef.current = handleDeviceMotion;
     }
-  }, [handleDeviceMotion, envAudioPlayer]);
+  }, [inPlay, envAudioPlayer, handleDeviceMotion]);
 
   const stop = useCallback(() => {
-    window.removeEventListener('devicemotion', handleDeviceMotionRef.current);
-    envAudioPlayer.pause();
-  }, [handleDeviceMotionRef, envAudioPlayer]);
+    if (!inPlay) return;
 
-  if (inPlay) {
+    window.removeEventListener('devicemotion', handleDeviceMotion);
+    envAudioPlayer.pause();
+    setInPlay(false);
+  }, [inPlay, handleDeviceMotion, envAudioPlayer]);
+
+  if (inFlight.current) {
     return <div className={styles.flash} />;
   }
 
@@ -133,7 +125,9 @@ export default function Game() {
           setAccelerationThreshold(Number(event.target.value));
         }}
       />
-      <Button onClick={start}>Start</Button>
+      <Button onClick={start} disabled={inPlay}>
+        Start
+      </Button>
       <Button onClick={stop}>Stop</Button>
       <pre>{JSON.stringify(acceleration, null, 2)}</pre>
       <pre>{JSON.stringify(accelerationHistory, null, 2)}</pre>
