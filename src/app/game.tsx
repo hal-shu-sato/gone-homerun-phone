@@ -21,8 +21,16 @@ export default function Game() {
 
   useEffect(() => {
     envAudioPlayer.load('/assets/sounds/lab-env.mp3', { loop: true });
-    cheersAudioPlayer.load('/assets/sounds/metal/lab-cheers.mp3');
-    hitAudioPlayer.load('/assets/sounds/metal/lab-far.mp3');
+    cheersAudioPlayer.load('/assets/sounds/metal/lab-cheers.mp3', {
+      onend: () => {
+        inFlight.current = false;
+      },
+    });
+    hitAudioPlayer.load('/assets/sounds/metal/lab-far.mp3', {
+      onend: () => {
+        inFlight.current = false;
+      },
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -39,9 +47,9 @@ export default function Game() {
       if (totalAcceleration < thld) return;
 
       inFlight.current = true;
-      setTimeout(() => {
-        inFlight.current = false;
-      }, 2000);
+      // setTimeout(() => {
+      //   inFlight.current = false;
+      // }, 2000);
       // For Android
       if (typeof window.navigator.vibrate === 'function')
         window.navigator.vibrate(200);
