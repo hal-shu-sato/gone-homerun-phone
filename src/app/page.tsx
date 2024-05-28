@@ -19,6 +19,10 @@ export default function Home() {
           >
             効果音ラボ
           </Link>
+          ・
+          <Link href="https://on-jin.com/" target="_blank" rel="noreferrer">
+            On-Jin ～音人～
+          </Link>
         </div>
       </Stack>
     </Container>

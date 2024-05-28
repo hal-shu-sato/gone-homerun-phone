@@ -7,6 +7,7 @@ import { useAudioPlayer } from 'react-use-audio-player';
 
 import styles from './game.module.css';
 
+const BUNT_THRESHOLD = 10;
 const HIT_THRESHOLD = 15;
 const CHEERS_THRESHOLD = 20;
 const FILTER_SIZE = 5;
@@ -22,6 +23,7 @@ export default function Game() {
   const envAudioPlayer = useAudioPlayer();
   const cheersAudioPlayer = useAudioPlayer();
   const hitAudioPlayer = useAudioPlayer();
+  const buntAudioPlayer = useAudioPlayer();
 
   useEffect(() => {
     envAudioPlayer.load('/assets/sounds/lab-env.mp3', { loop: true });
@@ -31,6 +33,11 @@ export default function Game() {
       },
     });
     hitAudioPlayer.load('/assets/sounds/metal/lab-far.mp3', {
+      onend: () => {
+        inFlight.current = false;
+      },
+    });
+    buntAudioPlayer.load('/assets/sounds/metal/on-jin-bunt.mp3', {
       onend: () => {
         inFlight.current = false;
       },
@@ -65,7 +72,7 @@ export default function Game() {
           (zSum / FILTER_SIZE) ** 2,
       );
 
-      if (totalAcceleration < HIT_THRESHOLD) return;
+      if (totalAcceleration < BUNT_THRESHOLD) return;
 
       inFlight.current = true;
       // For Android
@@ -76,11 +83,13 @@ export default function Game() {
 
       if (totalAcceleration >= CHEERS_THRESHOLD) {
         cheersAudioPlayer.play();
-      } else {
+      } else if (totalAcceleration >= HIT_THRESHOLD) {
         hitAudioPlayer.play();
+      } else {
+        buntAudioPlayer.play();
       }
     },
-    [cheersAudioPlayer, hitAudioPlayer],
+    [cheersAudioPlayer, hitAudioPlayer, buntAudioPlayer],
   );
 
   const start = useCallback(() => {
