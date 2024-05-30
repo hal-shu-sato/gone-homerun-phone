@@ -173,7 +173,9 @@ export default function Game() {
             <li>flashColor: {flashColor}</li>
             <li>judge: {judge}</li>
           </ul>
-          <pre>{JSON.stringify(accelerationHistory.toReversed(), null, 2)}</pre>
+          <pre>
+            {JSON.stringify([...accelerationHistory].reverse(), null, 2)}
+          </pre>
         </div>
       )}
     </>
