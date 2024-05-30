@@ -25,18 +25,18 @@ export default function Game() {
   const [judge, setJudge] = useState<string>('');
 
   const envAudioPlayer = useAudioPlayer();
-  const cheersAudioPlayer = useAudioPlayer();
+  const homerunAudioPlayer = useAudioPlayer();
   const hitAudioPlayer = useAudioPlayer();
   const buntAudioPlayer = useAudioPlayer();
 
   const { load: envAudioPlayerLoad } = envAudioPlayer;
-  const { load: cheersAudioPlayerLoad } = cheersAudioPlayer;
+  const { load: homerunAudioPlayerLoad } = homerunAudioPlayer;
   const { load: hitAudioPlayerLoad } = hitAudioPlayer;
   const { load: buntAudioPlayerLoad } = buntAudioPlayer;
 
   useEffect(() => {
     envAudioPlayerLoad('/assets/sounds/lab-env.mp3', { loop: true });
-    cheersAudioPlayerLoad('/assets/sounds/metal/lab-cheers.mp3', {
+    homerunAudioPlayerLoad('/assets/sounds/metal/lab-cheers.mp3', {
       onend: () => {
         inFlight.current = false;
       },
@@ -53,7 +53,7 @@ export default function Game() {
     });
   }, [
     envAudioPlayerLoad,
-    cheersAudioPlayerLoad,
+    homerunAudioPlayerLoad,
     hitAudioPlayerLoad,
     buntAudioPlayerLoad,
   ]);
@@ -96,7 +96,7 @@ export default function Game() {
       if (totalAcceleration >= HOMERUN_THRESHOLD) {
         setFlashColor('#1154B8');
         setJudge('Home Run!');
-        cheersAudioPlayer.play();
+        homerunAudioPlayer.play();
       } else if (totalAcceleration >= HIT_THRESHOLD) {
         setFlashColor('#1154B8');
         setJudge('Hit!');
@@ -107,7 +107,7 @@ export default function Game() {
         buntAudioPlayer.play();
       }
     },
-    [cheersAudioPlayer, hitAudioPlayer, buntAudioPlayer],
+    [homerunAudioPlayer, hitAudioPlayer, buntAudioPlayer],
   );
   const handleDeviceMotionRef = useRef(handleDeviceMotion);
 
