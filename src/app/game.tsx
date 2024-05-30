@@ -29,25 +29,34 @@ export default function Game() {
   const hitAudioPlayer = useAudioPlayer();
   const buntAudioPlayer = useAudioPlayer();
 
+  const { load: envAudioPlayerLoad } = envAudioPlayer;
+  const { load: cheersAudioPlayerLoad } = cheersAudioPlayer;
+  const { load: hitAudioPlayerLoad } = hitAudioPlayer;
+  const { load: buntAudioPlayerLoad } = buntAudioPlayer;
+
   useEffect(() => {
-    envAudioPlayer.load('/assets/sounds/lab-env.mp3', { loop: true });
-    cheersAudioPlayer.load('/assets/sounds/metal/lab-cheers.mp3', {
+    envAudioPlayerLoad('/assets/sounds/lab-env.mp3', { loop: true });
+    cheersAudioPlayerLoad('/assets/sounds/metal/lab-cheers.mp3', {
       onend: () => {
         inFlight.current = false;
       },
     });
-    hitAudioPlayer.load('/assets/sounds/metal/lab-far.mp3', {
+    hitAudioPlayerLoad('/assets/sounds/metal/lab-far.mp3', {
       onend: () => {
         inFlight.current = false;
       },
     });
-    buntAudioPlayer.load('/assets/sounds/metal/on-jin-bunt.mp3', {
+    buntAudioPlayerLoad('/assets/sounds/metal/on-jin-bunt.mp3', {
       onend: () => {
         inFlight.current = false;
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [
+    envAudioPlayerLoad,
+    cheersAudioPlayerLoad,
+    hitAudioPlayerLoad,
+    buntAudioPlayerLoad,
+  ]);
 
   const handleDeviceMotion = useCallback(
     (event: DeviceMotionEvent) => {
