@@ -2672,10 +2672,17 @@ semver@^7.6.0, semver@^7.6.3:
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.6.3.tgz#980f7b5550bc175fb4dc09403085627f9eb33143"
   integrity sha512-oVekP1cKtI+CTDvHWYFUcMtsK/00wmAEfyqKfNdARm8u1wNVhSgaX7A8d4UuIlUI5e84iEwOhs7ZPYRmzU9U6A==
 
-serwist@9.0.9, serwist@^9.0.9:
+serwist@9.0.9:
   version "9.0.9"
   resolved "https://registry.yarnpkg.com/serwist/-/serwist-9.0.9.tgz#2af3555ab4f910fa78750699f8715cb07f836dfb"
   integrity sha512-T3WzdvUjvK1AzNSTSuZkHWWKm0X5UuUaD3jvukHDFaJDmsLZBq0HGlrZ+bpOHoRFwhJSXwuH/V5ksE0I78wwvQ==
+  dependencies:
+    idb "8.0.0"
+
+serwist@^9.0.10:
+  version "9.0.10"
+  resolved "https://registry.yarnpkg.com/serwist/-/serwist-9.0.10.tgz#dc5d28ce798d647514515cbe4108bf83ffda395b"
+  integrity sha512-r6DiPmR99ZqfSo1T0SePgyUnQz0QmbVF6XywjWtCk1Qgk4EBAdrYRr9Y4Ul8Xge/jAnpEMyrmdSX9N1vgxWVgA==
   dependencies:
     idb "8.0.0"
 
