@@ -2531,10 +2531,10 @@ react-transition-group@^4.4.5:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react-use-audio-player@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/react-use-audio-player/-/react-use-audio-player-2.2.0.tgz#bddbb173b245213eecc26d5623d1763d1c9e2b82"
-  integrity sha512-IMM+WiZAq1KUvTwq0sAdRdjEzyG4jzz1tK/JtC/+LLt3z/uJk3AFRLL3pgbOgS/2SnfVzFKCxR7pnBsu6nUFvg==
+react-use-audio-player@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-use-audio-player/-/react-use-audio-player-2.2.1.tgz#ff535c975be5ae664b318a162e03f6340506d100"
+  integrity sha512-CljR71bRDh9uHGuMtkCFRrNLKSCw4FHD1qmP6KbMDEFqpbRztXjD1RtCD1T+Rrvzfci7VIN2Rfh8mUbv4wKuqQ==
   dependencies:
     howler "^2.2.3"
 
