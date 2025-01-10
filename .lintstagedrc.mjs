@@ -1,4 +1,4 @@
-const path = require('path');
+import path from 'node:path';
 
 /** @type {import('lint-staged').ConfigFn} */
 const buildEslintCommand = (filenames) =>
@@ -8,7 +8,7 @@ const buildEslintCommand = (filenames) =>
 const prettierCommand = 'prettier --write';
 
 /** @type {import('lint-staged').Config} */
-module.exports = {
+export default {
   '*.{ts,tsx}': [
     () => 'tsc --incremental false --noEmit',
     buildEslintCommand,

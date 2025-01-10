@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext", "webworker"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -27,8 +28,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".eslintrc.js",
-    "next.config.mjs"
+    ".lintstagedrc.mjs",
+    "eslint.config.mjs"
   ],
   "exclude": ["node_modules"]
 }
