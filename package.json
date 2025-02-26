@@ -16,7 +16,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@serwist/next": "^9.0.11",
+    "@serwist/next": "^9.0.12",
     "bootstrap": "^5.3.3",
     "next": "^15.1.7",
     "react": "^19.0.0",
