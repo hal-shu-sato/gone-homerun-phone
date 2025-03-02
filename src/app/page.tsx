@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Container, Stack } from 'react-bootstrap';
 
-import logoImg from '/public/ghp.jpg';
+import logoImg from '../assets/ghp.jpg';
 
 import Game from './game';
 import styles from './page.module.css';
