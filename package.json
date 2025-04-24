@@ -16,9 +16,9 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@serwist/next": "^9.0.12",
-    "bootstrap": "^5.3.4",
-    "next": "^15.2.4",
+    "@serwist/next": "^9.0.14",
+    "bootstrap": "^5.3.5",
+    "next": "^15.3.1",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.1.0",
@@ -27,24 +27,24 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
-    "@eslint/js": "^9.24.0",
+    "@eslint/js": "^9.25.1",
     "@types/bootstrap": "^5.2.10",
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/lint-staged": "^13.3.0",
-    "@types/node": "^22.14.0",
-    "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.1",
-    "eslint": "^9.24.0",
-    "eslint-config-next": "^15.3.0",
+    "@types/node": "^22.14.1",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "eslint": "^9.25.1",
+    "eslint-config-next": "^15.3.1",
     "eslint-config-prettier": "^10.1.2",
     "husky": "^9.1.7",
-    "lint-staged": "^15.5.0",
+    "lint-staged": "^15.5.1",
     "npm-run-all2": "^7.0.2",
     "prettier": "^3.5.3",
     "prettier-plugin-packagejson": "^2.5.10",
-    "serwist": "^9.0.12",
-    "typescript": "^5.8.2",
-    "typescript-eslint": "^8.29.0"
+    "serwist": "^9.0.14",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.31.0"
   },
   "packageManager": "yarn@1.22.22"
 }
