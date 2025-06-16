@@ -16,7 +16,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@serwist/next": "^9.0.14",
+    "@serwist/next": "^9.0.15",
     "bootstrap": "^5.3.6",
     "next": "^15.3.3",
     "react": "^19.1.0",
