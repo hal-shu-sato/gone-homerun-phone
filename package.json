@@ -41,7 +41,7 @@
     "npm-run-all2": "^8.0.4",
     "prettier": "^3.6.2",
     "prettier-plugin-packagejson": "^2.5.19",
-    "serwist": "^9.2.0",
+    "serwist": "^9.2.1",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.41.0"
   },
