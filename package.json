@@ -42,7 +42,7 @@
     "prettier-plugin-packagejson": "^2.5.19",
     "serwist": "^9.2.1",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.1"
+    "typescript-eslint": "^8.46.2"
   },
   "packageManager": "yarn@1.22.22"
 }
