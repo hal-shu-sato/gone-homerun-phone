@@ -29,7 +29,7 @@
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
     "@types/bootstrap": "^5.2.10",
-    "@types/node": "^25.0.1",
+    "@types/node": "^25.0.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.2",
@@ -42,7 +42,7 @@
     "prettier-plugin-packagejson": "^2.5.20",
     "serwist": "^9.2.3",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.49.0"
+    "typescript-eslint": "^8.50.0"
   },
   "packageManager": "yarn@1.22.22"
 }
