@@ -452,6 +452,11 @@
     serwist "9.3.0"
     zod "4.2.1"
 
+"@serwist/utils@9.4.4":
+  version "9.4.4"
+  resolved "https://registry.yarnpkg.com/@serwist/utils/-/utils-9.4.4.tgz#21d824f546de91b7119467d701e48e11e452d2bd"
+  integrity sha512-esgNORd4ihQC5FAOaHRsAt0E6h7cYfsZvACWMotwIqcC+Cw0Q1NDoTg8hKV1sJ9Sc1UKA0SF3jyaWRPnlKTsGQ==
+
 "@serwist/webpack-plugin@9.3.0":
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/@serwist/webpack-plugin/-/webpack-plugin-9.3.0.tgz#942c14272c1750c738cac733584454c29cf721b3"
@@ -2784,11 +2789,19 @@ semver@^6.3.1:
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.1.tgz#556d2ef8689146e46dcea4bfdd095f3434dffcb4"
   integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
 
-serwist@9.3.0, serwist@^9.3.0:
+serwist@9.3.0:
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/serwist/-/serwist-9.3.0.tgz#df9b29d47c3a530311962307cbeb084b33dfbe85"
   integrity sha512-ASuGP9U5LgZ5hB/iSwbtc1avstHBxWuhsJ9nbok38cnMMeFkyACB0L1nsVhKPck9yga23pie4yKWvRFsE/mn1w==
   dependencies:
+    idb "8.0.3"
+
+serwist@^9.4.4:
+  version "9.4.4"
+  resolved "https://registry.yarnpkg.com/serwist/-/serwist-9.4.4.tgz#b7afb1f17e6f4e684d766dcfde480465dfaf8d74"
+  integrity sha512-MrsVo5ruv8De4zRphWRyBh2XnQNtSplVg4NR1j4RNoQrjECMLncxYUirnJqkplBH7CA5IIUl+mlsKs4uD5JjiA==
+  dependencies:
+    "@serwist/utils" "9.4.4"
     idb "8.0.3"
 
 set-function-length@^1.2.2:
