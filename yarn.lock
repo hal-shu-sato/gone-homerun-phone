@@ -623,6 +623,11 @@
   resolved "https://registry.yarnpkg.com/@serwist/utils/-/utils-9.5.4.tgz#a12d38dfa5ca56b80c5c4948badc30637ea8fbf1"
   integrity sha512-uyriGQF1qjNEHXXfsd8XJ5kfK3/MezEaUw//XdHjZeJ0LvLamrgnLJGQQoyJqUfEPCiJ4jJwc4uYMB9LjLiHxA==
 
+"@serwist/utils@9.5.5":
+  version "9.5.5"
+  resolved "https://registry.yarnpkg.com/@serwist/utils/-/utils-9.5.5.tgz#78915f16119e56222ae92a16f68931a3d7752d7c"
+  integrity sha512-PJ96S9PXkWiiPK1+Czex5Lq5vhvp7yXBwtDOqPF2F1zVpoLga+do4kJZ+LrEWOr3IOiQ1WAfLvSMiK7aj/jrmg==
+
 "@serwist/webpack-plugin@9.5.4":
   version "9.5.4"
   resolved "https://registry.yarnpkg.com/@serwist/webpack-plugin/-/webpack-plugin-9.5.4.tgz#0e5f1ed3a46e8d4c61a34cd748bac30215bb8397"
@@ -3041,12 +3046,20 @@ semver@^7.7.1, semver@^7.7.3:
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.7.4.tgz#28464e36060e991fa7a11d0279d2d3f3b57a7e8a"
   integrity sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==
 
-serwist@9.5.4, serwist@^9.5.4:
+serwist@9.5.4:
   version "9.5.4"
   resolved "https://registry.yarnpkg.com/serwist/-/serwist-9.5.4.tgz#1d2634ca58615a4abf0f54b4ebaa217c6887019b"
   integrity sha512-uTHBzpIeA6rE3oyRt392MbtNQDs2JVZelKD1KkT18UkhX6HRwCeassoI1Nd1h52DqYqa7ZfBeldJ4awy+PYrnQ==
   dependencies:
     "@serwist/utils" "9.5.4"
+    idb "8.0.3"
+
+serwist@^9.5.5:
+  version "9.5.5"
+  resolved "https://registry.yarnpkg.com/serwist/-/serwist-9.5.5.tgz#991e140137d24ecbf9103dafcf3d6b02d03e6b62"
+  integrity sha512-qfyQpAR56KSYujr+47PqyDdxhK3GM3RVJxNjQm20KjB6vl5TbtEhtAxjl+aAQvzFQFcRlR12I2hCxuXyDTLHmQ==
+  dependencies:
+    "@serwist/utils" "9.5.5"
     idb "8.0.3"
 
 set-function-length@^1.2.2:
