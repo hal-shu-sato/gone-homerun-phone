@@ -1,6 +1,5 @@
-import { type Metadata } from 'next';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { type Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Gone Home-run Phone',
