@@ -29,9 +29,6 @@ importers:
       react-use-audio-player:
         specifier: ^4.0.2
         version: 4.0.2(react@19.2.8)
-      sharp:
-        specifier: ^0.35.3
-        version: 0.35.3(@types/node@26.2.0)
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.3.6
@@ -2449,7 +2446,8 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@img/colour@1.1.0': {}
+  '@img/colour@1.1.0':
+    optional: true
 
   '@img/sharp-darwin-arm64@0.35.3':
     optionalDependencies:
@@ -3203,7 +3201,8 @@ snapshots:
 
   detect-indent@7.0.2: {}
 
-  detect-libc@2.1.2: {}
+  detect-libc@2.1.2:
+    optional: true
 
   detect-newline@4.0.1: {}
 
@@ -4345,6 +4344,7 @@ snapshots:
       '@img/sharp-win32-ia32': 0.35.3
       '@img/sharp-win32-x64': 0.35.3
       '@types/node': 26.2.0
+    optional: true
 
   shebang-command@2.0.0:
     dependencies:
